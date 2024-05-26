@@ -1,0 +1,12 @@
+import math
+
+A, B, C = map(int, input().split())
+
+ratio_AB = A / B
+ratio_BC = B / C
+ratio_AC = ratio_AB * ratio_BC
+
+rotations_A = 10 / ratio_AC
+
+# 결과를 올림하여 출력합니다.
+print(math.ceil(rotations_A))
