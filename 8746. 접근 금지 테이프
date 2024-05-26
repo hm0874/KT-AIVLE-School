@@ -1,0 +1,39 @@
+def is_inside_polygon(points, p):
+    """점 p가 주어진 볼록 다각형 points 내부에 있는지 판별하는 함수"""
+    cross_signs = []
+    n = len(points)
+
+    for i in range(n):
+        p1 = points[i]
+        p2 = points[(i + 1) % n]
+
+        # 벡터 구하기
+        vector1 = (p2[0] - p1[0], p2[1] - p1[1])
+        vector2 = (p[0] - p1[0], p[1] - p1[1])
+
+        # 외적 계산
+        cross_product = vector1[0] * vector2[1] - vector1[1] * vector2[0]
+        cross_signs.append(cross_product > 0)
+
+    # 모든 외적의 부호가 동일한지 확인
+    return all(cross_signs) or not any(cross_signs)
+
+def main():
+    N, M = map(int, input().split())
+    polygon_points = list(map(int, input().split()))
+    excavation_points = list(map(int, input().split()))
+
+    # 좌표들을 (x, y) 형태로 변환
+    polygon = [(polygon_points[i], polygon_points[i+1]) for i in range(0, 2*N, 2)]
+    excavations = [(excavation_points[i], excavation_points[i+1]) for i in range(0, 2*M, 2)]
+
+    # 모든 유적 발굴 예상지역이 다각형 내부에 있는지 확인
+    for p in excavations:
+        if not is_inside_polygon(polygon, p):
+            print("NO")
+            return
+
+    print("YES")
+
+if __name__ == "__main__":
+    main()
