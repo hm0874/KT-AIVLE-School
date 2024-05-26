@@ -1,0 +1,28 @@
+def calculate_max_sweetness(N, chocolates):
+    # dp[i][j]는 i에서 j까지 초콜릿을 먹을 때의 최대 달콤함 합
+    dp = [[0] * N for _ in range(N)]
+    for length in range(1, N + 1):
+        for start in range(N):
+            end = (start + length - 1) % N
+            if length == 1:
+                dp[start][end] = chocolates[start][0]
+            else:
+                prev_start = (start - 1) % N
+                next_end = (end + 1) % N
+                dp[start][end] = max(
+                    dp[(start + 1) % N][end] + chocolates[start][0] + (length - 1) * chocolates[start][1],
+                    dp[start][(end - 1) % N] + chocolates[end][0] + (length - 1) * chocolates[end][1]
+                )
+
+    max_sweetness = float('-inf')
+    for i in range(N):
+        max_sweetness = max(max_sweetness, dp[(i + 1) % N][i], dp[i][(i - 1) % N])
+
+    return max_sweetness
+
+# 입력 받기
+N = int(input())
+chocolates = [tuple(map(int, input().split())) for _ in range(N)]
+
+# 결과 출력
+print(calculate_max_sweetness(N, chocolates))
