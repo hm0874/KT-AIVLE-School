@@ -1,0 +1,23 @@
+from math import gcd
+from functools import reduce
+
+def find_gcd(list):
+    x = reduce(gcd, list)
+    return x
+
+def max_kids(N, gifts):
+    # 모든 선물의 개수에 대한 최대공약수를 찾습니다.
+    max_gcd = find_gcd(gifts)
+    
+    # 최대공약수가 선물을 나눌 수 있는 최대 아이들의 수입니다.
+    return max_gcd
+
+# 입력
+N = int(input())
+gifts = list(map(int, input().split()))
+
+# 선물을 받게 되는 아이들의 최대 명수 계산
+result = max_kids(N, gifts)
+
+# 출력
+print(result)
