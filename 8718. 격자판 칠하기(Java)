@@ -1,0 +1,50 @@
+import java.util.Scanner;
+
+class Program {
+    static int[][] directions = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    static int N, M;
+    static int[] grid;
+    static int count;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        N = sc.nextInt();
+        M = sc.nextInt();
+        grid = new int[N * M];
+        count = 0;
+
+        colorGrid(0);
+        System.out.println(count);
+    }
+
+    private static void colorGrid(int pos) {
+        if (pos == N * M) {
+            count++;
+            return;
+        }
+
+        int x = pos / M;
+        int y = pos % M;
+        
+        for (int color = 1; color <= 3; color++) {
+            if (isValid(x, y, color)) {
+                grid[pos] = color;
+                colorGrid(pos + 1);
+                grid[pos] = 0;
+            }
+        }
+    }
+
+    private static boolean isValid(int x, int y, int color) {
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            if (newX >= 0 && newX < N && newY >= 0 && newY < M) {
+                if (grid[newX * M + newY] == color) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
