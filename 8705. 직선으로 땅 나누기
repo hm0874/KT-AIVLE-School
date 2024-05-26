@@ -1,0 +1,19 @@
+def find_min_lines(N):
+    # 필요한 최소 직선 수
+    lines = 0
+    # 현재까지 생성된 영역 수
+    areas = 1
+    
+    # 생성된 영역 수가 N보다 작은 동안 반복
+    while areas < N:
+        # 직선을 추가할 때마다 생성 가능한 새 영역 수 증가
+        lines += 1
+        areas += lines
+    
+    return lines
+
+# 입력 받기
+N = int(input())
+
+# 결과 출력
+print(find_min_lines(N))
