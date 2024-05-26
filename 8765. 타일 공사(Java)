@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+class Program {
+
+    private static int N, M, k, p;
+    private static int[] tiles;
+    private static int validConfigurations = 0;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 입력 받기
+        N = scanner.nextInt();
+        M = scanner.nextInt();
+        tiles = new int[N];
+        for (int i = 0; i < N; i++) {
+            tiles[i] = scanner.nextInt();
+        }
+        k = scanner.nextInt() - 1;
+        p = scanner.nextInt();
+
+        // 조건에 맞는 타일 배치 찾기
+        int[] corridor = new int[M];
+        backtrack(corridor, 0, 0);
+
+        // 결과 출력
+        System.out.println(validConfigurations);
+    }
+
+    private static void backtrack(int[] corridor, int pos, int countOfFavorite) {
+        if (pos == M) {
+            // 모든 위치에 타일을 놓은 경우
+            if (countOfFavorite >= p) {
+                validConfigurations++;
+            }
+            return;
+        }
+
+        for (int i = 0; i < N; i++) {
+            if (tiles[i] > 0 && (pos == 0 || Math.abs(corridor[pos - 1] - (i + 1)) != 1)) {
+                // 타일을 사용할 수 있고, 인접 타일과 색 차이가 1이 아닌 경우
+                corridor[pos] = i + 1;
+                tiles[i]--;
+                int newCountOfFavorite = countOfFavorite + (i == k ? 1 : 0);
+
+                backtrack(corridor, pos + 1, newCountOfFavorite);
+
+                // 원래 상태로 복구
+                tiles[i]++;
+            }
+        }
+    }
+}
