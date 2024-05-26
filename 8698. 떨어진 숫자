@@ -1,0 +1,27 @@
+# 입력 받기
+dropped_number = input()
+collected_numbers = input()
+
+# 각 숫자의 등장 횟수를 세기 위한 딕셔너리 초기화
+dropped_count = {}
+collected_count = {}
+
+# 떨어뜨린 수의 각 숫자별 등장 횟수 계산
+for num in dropped_number:
+    if num in dropped_count:
+        dropped_count[num] += 1
+    else:
+        dropped_count[num] = 1
+
+# 주워담은 숫자들의 각 숫자별 등장 횟수 계산
+for num in collected_numbers:
+    if num in collected_count:
+        collected_count[num] += 1
+    else:
+        collected_count[num] = 1
+
+# 두 딕셔너리(떨어뜨린 수와 주워담은 숫자들의 등장 횟수)를 비교
+if dropped_count == collected_count:
+    print("YES")
+else:
+    print("NO")
