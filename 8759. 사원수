@@ -1,0 +1,22 @@
+def multiply_quaternions(q1, q2):
+    # q1과 q2의 각 성분을 분해합니다.
+    a, b, c, d = q1
+    w, x, y, z = q2
+
+    # 사원수 곱셈 규칙에 따라 결과의 각 성분을 계산합니다.
+    o = a*w - b*x - c*y - d*z
+    p = a*x + b*w + c*z - d*y
+    q = a*y - b*z + c*w + d*x
+    r = a*z + b*y - c*x + d*w
+
+    return o, p, q, r
+
+# 입력을 받습니다.
+q1 = list(map(int, input().split()))
+q2 = list(map(int, input().split()))
+
+# 두 사원수를 곱합니다.
+result = multiply_quaternions(q1, q2)
+
+# 결과를 출력합니다.
+print(' '.join(map(str, result)))
