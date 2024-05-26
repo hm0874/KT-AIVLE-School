@@ -1,0 +1,19 @@
+# 입력 받기
+colors = input().split()
+
+# 군조의 명령을 이행할 수 있는지 판단하는 함수
+def is_possible(colors):
+    # 10^18번 진행 후 상태는, 짝수 번 진행시 원래 상태와 동일하고, 홀수 번 진행시 한 번 진행한 것과 동일하다.
+    # 즉, 10^18번 진행하면 원래 상태로 돌아온다는 의미이다.
+    # 따라서 처음부터 모든 짐이 같은 색의 상자에 들어가 있는지만 확인하면 된다.
+    if colors[0] == 'R' and colors[1] == 'G' and colors[2] == 'B':
+        return 'possible'
+    elif colors[0] == 'G' and colors[1] == 'B' and colors[2] == 'R':
+        return 'possible'
+    elif colors[0] == 'B' and colors[1] == 'R' and colors[2] == 'G':
+        return 'possible'
+    else:
+        return 'impossible'
+
+# 결과 출력
+print(is_possible(colors))
