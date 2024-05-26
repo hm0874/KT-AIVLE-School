@@ -1,0 +1,70 @@
+import java.util.*;
+
+class Program {
+    static String[] chords = {"A", "B", "C", "D", "E", "F", "G", "Am", "Bm", "Cm", "Dm", "Em", "Fm", "Gm"};
+    static boolean[][] bannedPairs;
+    static int N, a;
+    static int count = 0;
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        N = scanner.nextInt();
+        a = scanner.nextInt();
+        bannedPairs = new boolean[14][14];
+        
+        // 금지된 코드 진행 입력
+        for (int i = 0; i < N; i++) {
+            String first = scanner.next();
+            String second = scanner.next();
+            int firstIndex = Arrays.asList(chords).indexOf(first);
+            int secondIndex = Arrays.asList(chords).indexOf(second);
+            bannedPairs[firstIndex][secondIndex] = true;
+        }
+        
+        // 코드 진행 생성
+        generateSequences(new int[5], 0, 0, 0);
+        
+        // 유효한 코드 진행의 수 출력
+        System.out.println(count);
+        scanner.close();
+    }
+    
+    static void generateSequences(int[] current, int depth, int majorCount, int minorCount) {
+        if (depth == 5) {
+            count++;
+            return;
+        }
+        
+        for (int i = 0; i < 14; i++) {
+            boolean isMajor = (i < 7);
+            boolean isMinor = !isMajor;
+            
+            if (depth > 0 && bannedPairs[current[depth - 1]][i])
+                continue; // 금지된 진행 확인
+            
+            if (depth > 0) {
+                boolean lastIsMajor = (current[depth - 1] < 7);
+                boolean lastIsMinor = !lastIsMajor;
+                
+                if (isMajor && lastIsMajor && majorCount + 1 > a)
+                    continue; // 연속 메이저 확인
+                if (isMinor && lastIsMinor && minorCount + 1 > a)
+                    continue; // 연속 마이너 확인
+            }
+            
+            boolean isAlreadyUsed = false;
+            for (int j = 0; j < depth; j++) {
+                if (current[j] == i) {
+                    isAlreadyUsed = true;
+                    break;
+                }
+            }
+            if (isAlreadyUsed) continue;
+            
+            current[depth] = i;
+            generateSequences(current, depth + 1, 
+                              isMajor ? majorCount + 1 : 0, 
+                              isMinor ? minorCount + 1 : 0);
+        }
+    }
+}
