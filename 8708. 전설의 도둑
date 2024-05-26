@@ -1,0 +1,26 @@
+from collections import deque
+
+def min_warp(K, N):
+    # 방문한 위치를 확인하기 위한 배열, 최대 위치가 100,000이므로 범위를 조금 더 넓혀 설정
+    visited = [False] * 200001
+    queue = deque([(K, 0)])  # 현민의 시작 위치와 워프 횟수를 큐에 넣는다.
+    visited[K] = True
+
+    while queue:
+        current_pos, warp_count = queue.popleft()
+
+        # 현재 위치가 재우의 위치와 같다면 워프 횟수 반환
+        if current_pos == N:
+            return warp_count
+
+        # 워프를 이용해 이동 가능한 위치 확인
+        for next_pos in [current_pos + 3, current_pos - 1, current_pos * 2]:
+            # 다음 위치가 범위 내에 있고, 아직 방문하지 않았다면
+            if 0 <= next_pos <= 200000 and not visited[next_pos]:
+                visited[next_pos] = True  # 방문 처리
+                queue.append((next_pos, warp_count + 1))  # 큐에 추가
+
+# 입력 받기
+K, N = map(int, input().split())
+# 최소 워프 횟수 출력
+print(min_warp(K, N))
