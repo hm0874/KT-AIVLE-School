@@ -1,0 +1,57 @@
+from collections import deque
+
+def is_possible_to_swap_knights(board):
+    def find_knights(board):
+        white_knights = []
+        black_knights = []
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '1':
+                    white_knights.append((i, j))
+                elif board[i][j] == '2':
+                    black_knights.append((i, j))
+        return white_knights, black_knights
+
+    def calculate_possible_moves():
+        possible_moves = {}
+        for x in range(3):
+            for y in range(3):
+                moves = []
+                for dx, dy in [(-1, -2), (-1, 2), (1, -2), (1, 2), (-2, -1), (-2, 1), (2, -1), (2, 1)]:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < 3 and 0 <= ny < 3:
+                        moves.append((nx, ny))
+                possible_moves[(x, y)] = moves
+        return possible_moves
+
+    def bfs(start, target):
+        queue = deque([start])
+        visited = set([start])
+        while queue:
+            current = queue.popleft()
+            if current == target:
+                return True
+            for i in range(2):
+                for move in possible_moves[current[i]]:
+                    if move not in current:
+                        next_state = list(current)
+                        next_state[i] = move
+                        next_state = tuple(sorted(next_state))
+                        if next_state not in visited:
+                            visited.add(next_state)
+                            queue.append(next_state)
+        return False
+
+    white_knights, black_knights = find_knights(board)
+    possible_moves = calculate_possible_moves()
+
+    start_state = tuple(sorted(white_knights))
+    target_state = tuple(sorted(black_knights))
+
+    return "possible" if bfs(start_state, target_state) else "impossible"
+
+# 입력값 받기
+board = [input() for _ in range(3)]
+
+# 결과 출력
+print(is_possible_to_swap_knights(board))
