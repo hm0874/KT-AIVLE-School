@@ -1,0 +1,46 @@
+def get_final_permutation(N, K, A):
+    # 0-based indexing으로 변환
+    A = [a - 1 for a in A]
+
+    # 주기를 찾기 위한 visited 리스트 초기화
+    visited = [False] * N
+
+    # 주기를 저장할 리스트
+    cycles = []
+
+    # 모든 위치를 탐색하며 주기 찾기
+    for i in range(N):
+        if not visited[i]:
+            cycle = []
+            current = i
+            while not visited[current]:
+                visited[current] = True
+                cycle.append(current)
+                current = A[current]
+            cycles.append(cycle)
+    
+    # 결과 리스트 초기화 (1-based indexing)
+    result = list(range(1, N + 1))
+    
+    # 각 주기 별로 위치 계산
+    for cycle in cycles:
+        cycle_length = len(cycle)
+        for i in range(cycle_length):
+            result[cycle[(i + K) % cycle_length]] = cycle[i] + 1
+    
+    return result
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    N = int(data[0])
+    K = int(data[1])
+    A = list(map(int, data[2:2+N]))
+    
+    result = get_final_permutation(N, K, A)
+    print(' '.join(map(str, result)))
+
+if __name__ == "__main__":
+    main()
