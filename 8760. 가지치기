@@ -1,0 +1,45 @@
+# 부모 노드를 찾는 함수
+def find(parent, x):
+    if parent[x] != x:
+        parent[x] = find(parent, parent[x])
+    return parent[x]
+
+# 두 부모 노드를 합치는 함수
+def union(parent, a, b):
+    a = find(parent, a)
+    b = find(parent, b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+# 메인 코드
+def max_beauty(N, M, beauty, edges):
+    parent = [i for i in range(N+1)] # 부모 테이블 초기화
+    edge_list = []
+
+    # 간선의 아름다움 계산 및 리스트 생성
+    for a, b in edges:
+        edge_list.append((beauty[a-1] + beauty[b-1], a, b))
+
+    # 간선의 아름다움을 기준으로 내림차순 정렬
+    edge_list.sort(reverse=True)
+
+    result = 0
+    for edge in edge_list:
+        cost, a, b = edge
+
+        # 사이클이 발생하지 않는 경우만 선택
+        if find(parent, a) != find(parent, b):
+            union(parent, a, b)
+            result += cost
+            
+    return result
+
+# 입력
+N, M = map(int, input().split())
+beauty = list(map(int, input().split()))
+edges = [tuple(map(int, input().split())) for _ in range(M)]
+
+# 최대 아름다움 출력
+print(max_beauty(N, M, beauty, edges))
