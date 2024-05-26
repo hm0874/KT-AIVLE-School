@@ -1,0 +1,32 @@
+def convert_to_base(num, base):
+    digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    if num == 0:
+        return "0"
+    result = ""
+    while num:
+        result = digits[num % base] + result
+        num //= base
+    return result
+
+def calculate_file_size(nums, base):
+    size = 0
+    for num in nums:
+        converted = convert_to_base(num, base)
+        size += len(converted)
+    # 공백의 크기를 추가합니다(N-1).
+    size += len(nums) - 1
+    return size
+
+def find_minimum_base(N, M, nums):
+    for base in range(10, 63):  # 10진법부터 62진법까지 반복
+        if calculate_file_size(nums, base) <= M:
+            return base
+    return -1  # 62진법으로도 M보다 작게 만들 수 없는 경우
+
+# 입력을 받습니다.
+N, M = map(int, input().split())
+nums = list(map(int, input().split()))
+
+# 최소 진법을 찾아 출력합니다.
+min_base = find_minimum_base(N, M, nums)
+print(min_base)
