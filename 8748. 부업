@@ -1,0 +1,20 @@
+def can_pack(n, k, a1, a2, b1, b2):
+    # 선형 방정식을 통해 해결 가능한지 확인
+    for x in range(51):
+        for y in range(51):
+            if a1*x + b1*y == n and a2*x + b2*y == k:
+                return True
+    return False
+
+# 입력 받기
+T = int(input().strip())
+for _ in range(T):
+    n, k = map(int, input().split())
+    a1, a2 = map(int, input().split())
+    b1, b2 = map(int, input().split())
+
+    # 결과 출력
+    if can_pack(n, k, a1, a2, b1, b2):
+        print("YES")
+    else:
+        print("NO")
