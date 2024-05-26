@@ -1,0 +1,38 @@
+from collections import deque
+
+def bfs(start, end, graph):
+    queue = deque([start])  # (1번 컨테이너 위치, 2번 컨테이너 위치, 이동 횟수)
+    visited = set([start])
+    
+    while queue:
+        pos1, pos2, moves = queue.popleft()
+        if (pos1, pos2) == end:
+            return moves
+        
+        for next_pos1 in graph[pos1]:
+            if next_pos1 == pos2:  # 1번 컨테이너가 2번 컨테이너의 위치로 이동할 수 없음
+                continue
+            if (next_pos1, pos2) not in visited:
+                visited.add((next_pos1, pos2))
+                queue.append((next_pos1, pos2, moves + 1))
+                
+        for next_pos2 in graph[pos2]:
+            if next_pos2 == pos1:  # 2번 컨테이너가 1번 컨테이너의 위치로 이동할 수 없음
+                continue
+            if (pos1, next_pos2) not in visited:
+                visited.add((pos1, next_pos2))
+                queue.append((pos1, next_pos2, moves + 1))
+    
+    return -1
+
+N, M = map(int, input().split())
+S1, D1, S2, D2 = map(int, input().split())
+graph = {i: [] for i in range(1, N+1)}
+
+for _ in range(M):
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+result = bfs((S1, S2, 0), (D1, D2), graph)
+print(result)
