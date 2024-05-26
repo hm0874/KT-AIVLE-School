@@ -1,0 +1,63 @@
+import java.util.*;
+
+class Program {
+    static final int MOD = 1_000_000_007;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        long N = sc.nextLong();
+        sc.close();
+
+        if (N <= 4) {
+            int[] base = {1, 1, 2, 4, 8};
+            System.out.println(base[(int) N]);
+            return;
+        }
+
+        // 행렬 초기화
+        long[][] baseMatrix = {
+            {1, 1, 1, 1},
+            {1, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0}
+        };
+
+        // 초기 상태
+        long[] initial = {8, 4, 2, 1};
+
+        // 행렬 거듭제곱
+        long[][] resultMatrix = matrixPower(baseMatrix, N - 4);
+
+        // 결과 계산
+        long result = 0;
+        for (int i = 0; i < 4; i++) {
+            result = (result + resultMatrix[0][i] * initial[i]) % MOD;
+        }
+
+        System.out.println(result);
+    }
+
+    static long[][] matrixPower(long[][] base, long exp) {
+        long[][] result = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+        while (exp > 0) {
+            if (exp % 2 == 1) {
+                result = matrixMultiply(result, base);
+            }
+            base = matrixMultiply(base, base);
+            exp /= 2;
+        }
+        return result;
+    }
+
+    static long[][] matrixMultiply(long[][] a, long[][] b) {
+        long[][] result = new long[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                for (int k = 0; k < 4; k++) {
+                    result[i][j] = (result[i][j] + a[i][k] * b[k][j]) % MOD;
+                }
+            }
+        }
+        return result;
+    }
+}
