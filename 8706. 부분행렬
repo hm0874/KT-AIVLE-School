@@ -1,0 +1,21 @@
+def find_submatrix_sum(matrix, N, M, X):
+    for start_row in range(N):
+        for start_col in range(M):
+            for end_row in range(start_row, N):
+                for end_col in range(start_col, M):
+                    current_sum = 0
+                    for i in range(start_row, end_row + 1):
+                        for j in range(start_col, end_col + 1):
+                            current_sum += matrix[i][j]
+                    if current_sum == X:
+                        return "YES"
+    return "NO"
+
+# 입력 처리
+N, M, X = map(int, input().split())
+matrix = []
+for _ in range(N):
+    matrix.append(list(map(int, input().split())))
+
+# 결과 출력
+print(find_submatrix_sum(matrix, N, M, X))
