@@ -1,0 +1,13 @@
+# 사용자로부터 입력받음
+N, K = map(int, input().split())
+input_string = input()
+
+# 출력할 문자열 초기화
+output_string = ''
+
+# 입력받은 문자열의 각 문자를 K번 반복해 출력 문자열에 추가
+for char in input_string:
+    output_string += char * K
+
+# 결과 출력
+print(output_string)
