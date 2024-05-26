@@ -1,0 +1,20 @@
+N, K = map(int, input().split())
+holes = list(map(int, input().split()))
+
+# 싱크홀 위치를 오름차순으로 정렬
+holes.sort()
+
+# 필요한 널빤지 수 계산
+planks_needed = 0
+i = 0
+while i < N:
+    # 현재 싱크홀 위치에서 널빤지로 덮을 수 있는 최대 위치 계산
+    reach = holes[i] + K
+    planks_needed += 1  # 현재 싱크홀을 덮기 위해 널빤지 하나 추가
+    
+    # 현재 널빤지로 덮을 수 있는 다음 싱크홀 찾기
+    i += 1
+    while i < N and holes[i] < reach:
+        i += 1
+
+print(planks_needed)
