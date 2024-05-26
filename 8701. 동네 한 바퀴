@@ -1,0 +1,23 @@
+def dfs(graph, v, visited, start, passed_other):
+    visited[v] = True
+    if v == start and passed_other:
+        return True
+    for i in graph[v]:
+        if not visited[i]:
+            if dfs(graph, i, visited, start, True):
+                return True
+        elif i == start and passed_other:
+            return True
+    return False
+
+n, m = map(int, input().split())
+graph = [[] for _ in range(n + 1)]
+for _ in range(m):
+    s, e = map(int, input().split())
+    graph[s].append(e)
+
+visited = [False] * (n + 1)
+if dfs(graph, 1, visited, 1, False):
+    print("YES")
+else:
+    print("NO")
