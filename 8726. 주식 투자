@@ -1,0 +1,23 @@
+def count_ways(N, K):
+    # K/100을 하여 K를 100의 배수에서 실제 상승 또는 하락 횟수로 변환
+    K = K // 100
+    
+    # 경우의 수를 구하기 위해 조합을 계산하는 함수
+    def combination(n, r):
+        if r == 0: return 1
+        if n == r: return 1
+        return combination(n-1, r-1) + combination(n-1, r)
+    
+    ways = 0
+    # 상승 횟수(i)와 하락 횟수(N-i)를 이용해 K를 만족하는지 확인
+    for i in range(N+1):
+        if i + (N-i) == N and 2*i - N == K:
+            ways += combination(N, i)
+    
+    return ways
+
+# 입력 받기
+N, K = map(int, input().split())
+
+# 결과 출력
+print(count_ways(N, K))
