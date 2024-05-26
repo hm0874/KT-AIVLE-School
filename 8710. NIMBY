@@ -1,0 +1,32 @@
+def calculate_satisfaction(houses, K):
+    # 만족도를 계산하는 함수
+    def get_satisfaction(pos):
+        satisfaction = 0
+        for house in houses:
+            d = abs(house - pos)
+            if d <= K:
+                satisfaction += d
+            else:
+                satisfaction -= d
+        return satisfaction
+
+    max_satisfaction = float('-inf')
+    best_position = None
+
+    # 모든 집의 위치를 순회하며 만족도가 최대가 되는 위치 찾기
+    for pos in houses:
+        current_satisfaction = get_satisfaction(pos)
+        if current_satisfaction > max_satisfaction:
+            max_satisfaction = current_satisfaction
+            best_position = pos
+        elif current_satisfaction == max_satisfaction:
+            best_position = min(best_position, pos)
+
+    return best_position
+
+# 입력 받기
+N, K = map(int, input().split())
+houses = list(map(int, input().split()))
+
+# 결과 출력
+print(calculate_satisfaction(houses, K))
