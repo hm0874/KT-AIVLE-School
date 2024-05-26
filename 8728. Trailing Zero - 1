@@ -1,0 +1,32 @@
+def find_trailing_zeros(n, base):
+    # base의 소인수분해
+    i = 2
+    base_factors = {}
+    while i * i <= base:
+        while base % i == 0:
+            if i in base_factors:
+                base_factors[i] += 1
+            else:
+                base_factors[i] = 1
+            base //= i
+        i += 1
+    if base > 1:
+        base_factors[base] = 1
+
+    # 각 소인수에 대한 zero의 개수 계산
+    zeros = float('inf')
+    for factor, count in base_factors.items():
+        temp = n
+        factor_zeros = 0
+        while temp // factor > 0:
+            factor_zeros += temp // factor
+            temp //= factor
+        zeros = min(zeros, factor_zeros // count)
+
+    return zeros
+
+# 예제 입력
+p, n = map(int, input().split())
+
+# 예제 출력
+print(find_trailing_zeros(n, p))
