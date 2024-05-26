@@ -1,0 +1,42 @@
+class Graph:
+    def __init__(self, n):
+        self.vertices = n  # 정점의 개수
+        self.adj_list = {}  # 간선을 저장하기 위한 인접 리스트
+
+    def add_edge(self, u, v):
+        if u not in self.adj_list:
+            self.adj_list[u] = []
+        if v not in self.adj_list:
+            self.adj_list[v] = []
+        self.adj_list[u].append(v)
+        self.adj_list[v].append(u)
+
+    def min_cost_to_adjust_weights(self, weights, k):
+        min_cost = 0
+        adjusted = True
+        while adjusted:
+            adjusted = False  # 가중치 조절이 필요 없다고 가정
+            for u in self.adj_list:
+                for v in self.adj_list[u]:
+                    if abs(weights[u-1] - weights[v-1]) > k:
+                        diff = abs(weights[u-1] - weights[v-1])
+                        min_cost += diff - k
+                        # 가중치 차이가 큰 쪽의 정점 가중치를 조절
+                        if weights[u-1] < weights[v-1]:
+                            weights[u-1] += diff - k
+                        else:
+                            weights[v-1] += diff - k
+                        adjusted = True  # 가중치 조절이 발생했으므로 다시 검사 필요
+        return min_cost
+
+# 입력값 읽기
+N, M, K = map(int, input().split())
+weights = [int(input()) for _ in range(N)]
+graph = Graph(N)
+
+for _ in range(M):
+    u, v = map(int, input().split())
+    graph.add_edge(u, v)
+
+min_cost = graph.min_cost_to_adjust_weights(weights, K)
+print(min_cost)
