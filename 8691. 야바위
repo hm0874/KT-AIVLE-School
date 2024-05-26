@@ -1,0 +1,17 @@
+# 입력 받기
+N, M = map(int, input().split())
+moves = [list(map(int, input().split())) for _ in range(M)]
+K = int(input())
+
+# 공의 위치 초기화
+ball_position = K
+
+# 컵의 움직임에 따라 공의 위치 업데이트
+for move in moves:
+    if move[0] == ball_position:
+        ball_position = move[1]
+    elif move[1] == ball_position:
+        ball_position = move[0]
+
+# 최종 공의 위치 출력
+print(ball_position)
