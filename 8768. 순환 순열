@@ -1,0 +1,19 @@
+MOD = 1000000007  # MOD 연산을 위한 상수
+
+def 순환순열_개수_구하기(N):
+    """
+    길이 N의 순환 순열의 개수를 MOD로 나눈 나머지를 구하는 함수
+    """
+    factorial = [1] * (N + 1)  # 팩토리얼 값을 저장할 리스트 초기화
+    for i in range(1, N + 1):
+        factorial[i] = factorial[i - 1] * i % MOD  # 팩토리얼 계산 후 MOD로 나머지 구하기
+    
+    total_permutations = factorial[N]  # 순환성을 고려하지 않고 모든 순열의 수
+    result = total_permutations - pow(2, N - 1, MOD)  # 비순환 순열의 수 빼기
+    return result % MOD  # 결과를 MOD로 나눈 나머지 반환
+
+# 입력값 N 읽기
+N = int(input())
+
+# 순환 순열 개수 계산하고 결과 출력
+print(순환순열_개수_구하기(N))
