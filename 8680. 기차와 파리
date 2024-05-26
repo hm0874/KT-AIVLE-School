@@ -1,0 +1,11 @@
+# 입력 받기
+X, Y, Z = map(int, input().split())
+
+# 두 기차가 충돌하는 데 걸리는 시간 계산
+collision_time = X / (Y * 2)
+
+# 파리가 이동한 거리 계산
+fly_distance = Z * collision_time
+
+# 출력 (소수점 버림)
+print(int(fly_distance))
