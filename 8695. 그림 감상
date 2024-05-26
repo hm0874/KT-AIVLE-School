@@ -1,0 +1,23 @@
+# 입력받은 4x4 그리드를 리스트로 변환
+grid = [input() for _ in range(4)]
+
+def can_create_square(grid):
+    for i in range(3): # 4x4 그리드이므로, 2x2 영역 검사를 위해 3까지 반복
+        for j in range(3):
+            # 현재 2x2 영역에서 X의 개수를 세기
+            x_count = 0
+            for di in range(2):
+                for dj in range(2):
+                    if grid[i+di][j+dj] == 'X':
+                        x_count += 1
+            # X가 4개면 이미 완성된 영역이므로 yes 반환
+            if x_count == 4:
+                return "yes"
+            # X가 3개면 마법의 붓을 사용해 완성할 수 있으므로 yes 반환
+            elif x_count == 3:
+                return "yes"
+    # 위 조건을 만족하는 영역이 없으면 no 반환
+    return "no"
+
+# 결과 출력
+print(can_create_square(grid))
