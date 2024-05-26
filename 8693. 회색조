@@ -1,0 +1,17 @@
+# 헥스 코드를 입력받습니다.
+hex_code = input().strip()
+
+# 헥스 코드에서 R, G, B 값을 16진수로 변환합니다.
+r = int(hex_code[1:3], 16)
+g = int(hex_code[3:5], 16)
+b = int(hex_code[5:7], 16)
+
+# R, G, B의 평균값을 계산합니다.
+average = round((r + g + b) / 3)
+
+# 평균값을 다시 헥스 코드로 변환합니다.
+# 이때, 평균값이 한 자리 수일 경우 앞에 0을 붙여 두 자리로 만듭니다.
+gray_hex = f'#{average:02X}{average:02X}{average:02X}'
+
+# 결과를 출력합니다.
+print(gray_hex)
