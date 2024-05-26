@@ -1,0 +1,6 @@
+N, a, b = map(int, input().split())
+ 
+result = (N*b+N-1) // (a-1)
+if N*b+N > 1+result*(a-1):
+    result += 1
+print(result + N)
