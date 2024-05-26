@@ -1,0 +1,33 @@
+from itertools import combinations
+from math import inf
+
+def calculate_distance(a, b):
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+def min_delivery_time(n, k, houses):
+    def backtrack(start, visited, current_distance, current_count):
+        nonlocal min_time
+        if current_count == k:
+            # 모든 배달을 완료하고 식당으로 돌아오는 거리 추가
+            min_time = min(min_time, current_distance + calculate_distance(start, (1, 1)))
+            return
+        for i in range(n):
+            if i not in visited:
+                # 다음 집까지의 거리 계산
+                next_distance = calculate_distance(start, houses[i])
+                # 현재까지의 최소 시간보다 길어질 경우, 더 이상 탐색하지 않음
+                if current_distance + next_distance < min_time:
+                    visited.add(i)
+                    backtrack(houses[i], visited, current_distance + next_distance, current_count + 1)
+                    visited.remove(i)
+    
+    min_time = inf
+    backtrack((1, 1), set(), 0, 0)
+    return min_time
+
+# 입력 처리
+N, K = map(int, input().split())
+houses = [tuple(map(int, input().split())) for _ in range(N)]
+
+# 결과 출력
+print(min_delivery_time(N, K, houses))
