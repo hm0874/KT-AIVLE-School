@@ -1,0 +1,33 @@
+import sys
+ 
+s = sys.stdin.readline().replace('\n', '')
+ 
+is_g = False
+min_cnt = 0
+max_cnt = 0
+for i in range(len(s)):
+    if s[i] == 'o':
+        if is_g:
+            is_g = False
+            min_cnt += 1
+    elif s[i] == 'g':
+        if not is_g:
+            is_g = True
+ 
+is_g = False
+for i in range(len(s)):
+    if s[i] == 'o':
+        if is_g:
+            is_g = False
+            max_cnt += 1
+    elif s[i] == 'g':
+        if not is_g:
+            is_g = True
+    else:
+        if is_g:
+            is_g = False
+            max_cnt += 1
+        else:
+            is_g = True
+print(min_cnt)
+print(max_cnt)
