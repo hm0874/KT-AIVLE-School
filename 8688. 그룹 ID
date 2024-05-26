@@ -1,0 +1,33 @@
+from collections import defaultdict
+
+def dfs(vertex, visited, graph):
+    visited[vertex] = True
+    count = 1
+    for neighbor in graph[vertex]:
+        if not visited[neighbor]:
+            count += dfs(neighbor, visited, graph)
+    return count
+
+# 입력 받기
+N, M = map(int, input().split())
+graph = defaultdict(list)
+for _ in range(M):
+    u, v = map(int, input().split())
+    graph[u].append(v)
+    graph[v].append(u)
+
+# 각 그룹의 크기와 최소 ID를 저장하는 변수
+max_group_size = 0
+min_group_id = N + 1
+
+visited = [False] * (N + 1)
+for i in range(1, N + 1):
+    if not visited[i]:
+        current_group_size = dfs(i, visited, graph)
+        if current_group_size > max_group_size:
+            max_group_size = current_group_size
+            min_group_id = i
+        elif current_group_size == max_group_size:
+            min_group_id = min(min_group_id, i)
+
+print(min_group_id)
