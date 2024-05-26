@@ -1,0 +1,66 @@
+def find(parent, x):
+    if parent[x] != x:
+        parent[x] = find(parent, parent[x])
+    return parent[x]
+
+def union(parent, rank, x, y):
+    rootX = find(parent, x)
+    rootY = find(parent, y)
+    
+    if rootX != rootY:
+        if rank[rootX] > rank[rootY]:
+            parent[rootY] = rootX
+        elif rank[rootX] < rank[rootY]:
+            parent[rootX] = rootY
+        else:
+            parent[rootY] = rootX
+            rank[rootX] += 1
+        return True
+    return False
+
+import sys
+input = sys.stdin.read
+data = input().split()
+
+# 입력 처리
+n = int(data[0])  # 행성의 개수
+m = int(data[1])  # 알려진 경로의 개수
+k = int(data[2])  # 워프 비용
+
+edges = []
+index = 3
+for _ in range(m):
+    u = int(data[index]) - 1
+    v = int(data[index+1]) - 1
+    w = int(data[index+2])
+    edges.append((w, u, v))
+    index += 3
+
+# 간선 비용 기준으로 정렬
+edges.sort()
+
+# 워프 비용으로 모든 행성을 연결할 때의 비용 계산
+warp_cost = (n - 1) * k
+
+# Kruskal's MST 알고리즘을 사용하여 계산
+parent = [i for i in range(n)]
+rank = [0] * n
+mst_cost = 0
+num_connected = 0  # 현재 MST에 포함된 간선 수
+
+for cost, u, v in edges:
+    if find(parent, u) != find(parent, v):
+        if cost > k:
+            break
+        if union(parent, rank, u, v):
+            mst_cost += cost
+            num_connected += 1
+            if num_connected == n-1:
+                break
+
+# MST가 완성되지 않았다면, 남은 부분을 워프로 연결
+if num_connected < n-1:
+    mst_cost += (n - 1 - num_connected) * k
+
+# 두 비용 중 더 작은 것을 선택
+print(min(warp_cost, mst_cost))
