@@ -1,0 +1,15 @@
+N = int(input())
+H = list(map(int, input().split()))
+ 
+cnt_list = [0] * N
+for idx in range(N):
+    max_cnt = 0
+    for i in range(idx):
+        if H[i] < H[idx] and max_cnt < cnt_list[i]:
+            max_cnt = cnt_list[i]
+    cnt_list[idx] = max_cnt + 1
+ 
+if 1 in H:
+    print(max(cnt_list))
+else:
+    print(max(cnt_list)-1)
