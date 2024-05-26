@@ -1,0 +1,19 @@
+# 입력 받기
+initial_time = input()
+N = int(input())
+
+# 초기 시간을 시와 분으로 분리
+hours, minutes = map(int, initial_time.split(':'))
+
+# N번째 알람까지의 총 추가 분 계산 (등차수열의 합 공식 사용)
+total_extra_minutes = (N - 1) * N // 2
+
+# 총 시간에 추가 분을 더함
+total_minutes = hours * 60 + minutes + total_extra_minutes
+
+# 24시간 형태로 조정
+final_hours = (total_minutes // 60) % 24
+final_minutes = total_minutes % 60
+
+# 결과 출력
+print(f'{final_hours:02d}:{final_minutes:02d}')
