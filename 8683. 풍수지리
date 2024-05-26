@@ -1,0 +1,30 @@
+def max_blessing(grid, N, M):
+    max_bless = 0  # 최대 축복 받을 수 있는 값 초기화
+    # 모든 가능한 직사각형 영역에 대해 조사
+    for start_row in range(N):
+        for start_col in range(M):
+            for end_row in range(start_row, N):
+                for end_col in range(start_col, M):
+                    # 시작점: (start_row, start_col), 끝점: (end_row, end_col)
+                    # 해당 영역이 모두 같은 기운을 내뿜는지 확인
+                    bless = check_blessing(grid, start_row, start_col, end_row, end_col)
+                    max_bless = max(max_bless, bless)
+    return max_bless
+
+def check_blessing(grid, start_row, start_col, end_row, end_col):
+    # 첫 번째 칸의 기운을 기준으로 설정
+    initial = grid[start_row][start_col]
+    area = (end_row - start_row + 1) * (end_col - start_col + 1)
+    for row in range(start_row, end_row + 1):
+        for col in range(start_col, end_col + 1):
+            if grid[row][col] != initial:
+                return 0  # 다른 기운이 있는 경우 축복 받을 수 없음
+    return area  # 모두 같은 기운일 경우 영역의 크기 반환
+
+def main():
+    N, M = map(int, input().split())
+    grid = [input().strip() for _ in range(N)]
+    print(max_blessing(grid, N, M))
+
+if __name__ == "__main__":
+    main()
