@@ -1,0 +1,38 @@
+import sys
+from collections import deque
+ 
+def min_time_to_escape(maze, N, M):
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # 오른쪽, 아래, 왼쪽, 위 순서
+    queue = deque([(0, 0, 0)])  # (row, col, minutes)
+    visited = [[False] * M for _ in range(N)]
+    visited[0][0] = True
+    
+    while queue:
+        x, y, minutes = queue.popleft()
+        
+        if (x, y) == (N-1, M-1):
+            return minutes
+        
+        for dx, dy in directions:
+            # 첫 번째 칸
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < N and 0 <= ny < M and maze[nx][ny] == '.':
+                # 두 번째 칸
+                nx2, ny2 = nx + dx, ny + dy
+                if 0 <= nx2 < N and 0 <= ny2 < M and maze[nx2][ny2] == '.':
+                    if not visited[nx2][ny2]:
+                        visited[nx2][ny2] = True
+                        queue.append((nx2, ny2, minutes + 1))
+                else:
+                    if not visited[nx][ny]:
+                        visited[nx][ny] = True
+                        queue.append((nx, ny, minutes + 1))
+ 
+    return -1
+ 
+# 입력 받기
+N, M = map(int, sys.stdin.readline().split())
+maze = [sys.stdin.readline().strip() for _ in range(N)]
+ 
+# 결과 계산 및 출력
+print(min_time_to_escape(maze, N, M))
