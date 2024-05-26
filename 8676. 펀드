@@ -1,0 +1,16 @@
+# 입력 받기
+A, B = map(int, input().split())  # 기본 금액과 신용도
+N, M = map(int, input().split())  # 옵션의 개수와 선택할 옵션의 개수
+options = [int(input()) for _ in range(N)]  # 옵션 금액들
+
+# 옵션 금액을 내림차순으로 정렬
+options.sort(reverse=True)
+
+# 가장 큰 값을 가지는 M개의 옵션을 선택
+selected_options = options[:M]
+
+# 예상 수익 계산
+expected_profit = A + B * sum(selected_options)
+
+# 예상 수익 출력
+print(expected_profit)
