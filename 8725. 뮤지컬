@@ -1,0 +1,31 @@
+n, k = map(int, input().split())
+actors = list(map(int, input().split()))
+
+# 각 배우가 마지막으로 연기한 날짜를 저장하는 딕셔너리
+last_seen = {}
+
+# 현재 보고 있는 구간 내의 배우들의 수를 저장하는 변수
+count = 0
+
+# 철수가 머물러야 하는 최소 일수
+min_days = n
+
+# 투 포인터 초기값 설정
+left = 0
+
+for right in range(n):
+    # 현재 배우가 이 구간에서 처음 등장했다면, count 증가
+    if actors[right] not in last_seen or last_seen[actors[right]] < left:
+        count += 1
+    # 배우의 마지막 연기 날짜 갱신
+    last_seen[actors[right]] = right
+    
+    # 모든 배우의 연기를 볼 수 있는 상태라면,
+    # 가능한 한 가장 짧은 구간을 찾기 위해 left 포인터를 이동시킨다.
+    while count == k:
+        min_days = min(min_days, right - left + 1)
+        if last_seen[actors[left]] == left:
+            count -= 1
+        left += 1
+
+print(min_days)
