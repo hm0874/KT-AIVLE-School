@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+class Program {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 입력값을 받습니다.
+        int L = scanner.nextInt();
+        int R = scanner.nextInt();
+        
+        // 가능한 조합의 수를 저장할 변수
+        long count = 0;
+
+        // A의 값을 L부터 R까지 순회합니다.
+        for (int A = L; A <= R; A++) {
+            // B의 최소값은 L, 최대값은 A-L (C가 L 이상이여야 하므로)
+            int B_start = Math.max(L, A - R);
+            int B_end = Math.min(R, A - L);
+
+            if (B_start <= B_end) {
+                // 가능한 B의 범위 내에 있는 값의 개수를 모두 더합니다.
+                count += (B_end - B_start + 1);
+            }
+        }
+
+        // 결과 출력
+        System.out.println(count);
+        
+        // 스캐너 닫기
+        scanner.close();
+    }
+}
