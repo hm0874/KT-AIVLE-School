@@ -1,0 +1,41 @@
+from collections import deque
+
+MOD = 1000000007
+
+def find_paths(n, k, edges):
+    graph = [[] for _ in range(n + 1)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # 최단 거리와 경로의 수를 저장할 배열
+    distance = [-1] * (n + 1)
+    count = [0] * (n + 1)
+    
+    # 시작 지점 초기화
+    distance[1] = 0
+    count[1] = 1
+
+    queue = deque([1])
+    while queue:
+        current_node = queue.popleft()
+
+        for next_node in graph[current_node]:
+            # 아직 방문하지 않은 노드인 경우
+            if distance[next_node] == -1:
+                distance[next_node] = distance[current_node] + 1
+                count[next_node] = count[current_node]
+                queue.append(next_node)
+            # 최단 거리로 다시 방문하는 경우, 경로의 수를 업데이트
+            elif distance[next_node] == distance[current_node] + 1:
+                count[next_node] += count[current_node]
+                count[next_node] %= MOD
+
+    return count[n]
+
+# 입력 처리
+n, k = map(int, input().split())
+edges = [list(map(int, input().split())) for _ in range(k)]
+
+# 경로의 수 계산 및 출력
+print(find_paths(n, k, edges))
