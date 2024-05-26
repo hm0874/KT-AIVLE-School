@@ -1,0 +1,42 @@
+def mukjippa(bot1, bot2):
+    # 가위바위보 결과를 판단하는 함수
+    def rsp(a, b):
+        if a == b:
+            return 0  # 비김
+        elif (a == 1 and b == 2) or (a == 2 and b == 3) or (a == 3 and b == 1):
+            return 2  # 두 번째 플레이어 승
+        else:
+            return 1  # 첫 번째 플레이어 승
+    
+    len1, len2 = len(bot1), len(bot2)
+    index1, index2 = 0, 0  # 두 봇의 현재 인덱스
+    attacker = None  # 현재 공격자
+
+    while True:
+        result = rsp(bot1[index1], bot2[index2])
+        if attacker is None:  # 가위바위보로 선공 결정
+            if result != 0:
+                attacker = result
+        else:  # 선공이 결정된 후의 게임 진행
+            if result == 0:  # 같은 것을 내면 현재 공격자의 승리
+                return attacker
+            elif result != attacker:  # 공수 교대
+                attacker = result
+        
+        # 인덱스 업데이트 (리스트의 끝에 도달하면 처음으로)
+        index1 = (index1 + 1) % len1
+        index2 = (index2 + 1) % len2
+
+        # 무한 루프 방지 - 모든 가능한 조합을 확인
+        if index1 == 0 and index2 == 0:
+            break
+
+    return 0  # 모든 조합을 확인했으나 승부가 나지 않음
+
+# 입력 받기
+N, M = map(int, input().split())
+bot1 = list(map(int, input().split()))
+bot2 = list(map(int, input().split()))
+
+# 승부 결과 출력
+print(mukjippa(bot1, bot2))
