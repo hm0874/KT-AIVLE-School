@@ -1,0 +1,42 @@
+def is_palindrome(time):
+    # 시간을 뒤집었을 때 동일한지 확인하는 함수
+    return time == time[::-1]
+
+def add_minutes(hh, mm, k):
+    # 분에 k를 더하고, 시간과 분을 조정하는 함수
+    mm += k
+    hh += mm // 60
+    mm %= 60
+    hh %= 24
+    return hh, mm
+
+def to_time_string(hh, mm):
+    # 시간을 HH:MM 형식의 문자열로 변환하는 함수
+    return f"{hh:02d}:{mm:02d}"
+
+def count_palindromic_times(start_time, k):
+    # 앞뒤로 뒤집어서 동일한 시간의 개수를 세는 함수
+    count = 0
+    hh, mm = map(int, start_time.split(':'))
+    visited = set()
+
+    while True:
+        # 무한 루프를 방지하기 위해 이미 확인한 시간을 저장
+        current_time = to_time_string(hh, mm)
+        if current_time in visited:
+            break
+        visited.add(current_time)
+
+        if is_palindrome(current_time):
+            count += 1
+
+        hh, mm = add_minutes(hh, mm, k)
+
+    return count
+
+# 예제 입력
+start_time = input()
+k = int(input())
+
+# 결과 출력
+print(count_palindromic_times(start_time, k))
