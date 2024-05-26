@@ -1,0 +1,22 @@
+def max_value(items, bags):
+    # 물건을 가치대비 무게 비율이 높은 순으로 정렬합니다.
+    items.sort(key=lambda x: (-x[1], x[0]))
+    # 가방의 무게 제한을 오름차순으로 정렬합니다.
+    bags.sort()
+    
+    result = 0
+    for bag in bags:
+        for i, item in enumerate(items):
+            if item[0] <= bag:
+                result += item[1]
+                items.pop(i)  # 선택된 물건은 제거합니다.
+                break  # 현재 가방에 물건을 담았으므로 다음 가방으로 넘어갑니다.
+    return result
+
+# 입력 예시
+N, K = map(int, input().split())
+items = [list(map(int, input().split())) for _ in range(N)]
+bags = [int(input()) for _ in range(K)]
+
+# 결과 출력
+print(max_value(items, bags))
