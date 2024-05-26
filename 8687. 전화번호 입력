@@ -1,0 +1,13 @@
+import re
+
+# 입력 받기
+S = input()
+
+# 정규 표현식 패턴 정의 (010-XXXX-XXXX)
+pattern = r"010-\d{4}-\d{4}"
+
+# 패턴과 입력값이 일치하는지 검사
+if re.fullmatch(pattern, S):
+    print("valid")
+else:
+    print("invalid")
