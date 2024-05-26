@@ -1,0 +1,31 @@
+# 입력을 읽고 그래프의 인접 리스트 표현을 생성하는 함수 정의
+def create_adjacency_list(N, M, edges):
+    adjacency_list = [[] for _ in range(N)]  # N개의 정점에 대한 빈 인접 리스트 초기화
+    
+    for edge in edges:
+        u, v = edge
+        # 무방향 그래프이므로 양방향으로 간선 추가
+        adjacency_list[u - 1].append(v)
+        adjacency_list[v - 1].append(u)
+    
+    return adjacency_list
+
+# 각 정점에 직접 연결된 정점을 출력하는 함수
+def print_connected_vertices(N, adjacency_list):
+    for i in range(N):
+        if adjacency_list[i]:  # 정점에 인접한 정점이 있는 경우
+            print(*sorted(adjacency_list[i]))  # 정렬된 순서로 출력
+        else:
+            print("no")  # 인접한 정점이 없는 경우 "no" 출력
+
+# 정점의 수와 간선의 수를 입력으로 받음
+N, M = map(int, input().split())
+
+# 간선을 입력으로 받음
+edges = [list(map(int, input().split())) for _ in range(M)]
+
+# 인접 리스트 생성
+adjacency_list = create_adjacency_list(N, M, edges)
+
+# 각 정점에 직접 연결된 정점 출력
+print_connected_vertices(N, adjacency_list)
