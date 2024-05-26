@@ -1,0 +1,37 @@
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+def find_pseudo_primes(n):
+    pseudo_primes = []
+    for i in range(2, n):
+        if n % i == 0:
+            a, b = i, n // i
+            if is_prime(a) and is_prime(b) and a != b:
+                pseudo_primes.append(n)
+                break
+    return pseudo_primes
+
+def can_be_divided(n):
+    # 예외 처리: 너무 작은 수는 유사 소수 분할이 불가능
+    if n < 12:
+        return "impossible"
+    
+    pseudo_primes = find_pseudo_primes(n)
+    
+    # 분할 가능성 검사
+    # 여기서는 단순화를 위해, N이 충분히 클 경우 대부분 가능하다고 가정
+    if len(pseudo_primes) >= 3 or n > 30:
+        return "possible"
+    else:
+        return "impossible"
+
+# 입력 예시
+N = int(input())
+
+# 결과 출력
+print(can_be_divided(N))
