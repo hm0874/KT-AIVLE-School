@@ -1,0 +1,16 @@
+# 입력 받기
+N, K = map(int, input().split())
+
+# 홀수 개수 계산
+odd_count = (N + 1) // 2
+
+# K번째 자연수 찾기
+if K <= odd_count:
+    # K번째 자연수가 홀수인 경우
+    answer = 1 + (K - 1) * 2
+else:
+    # K번째 자연수가 짝수인 경우
+    answer = 2 + (K - odd_count - 1) * 2
+
+# 결과 출력
+print(answer)
