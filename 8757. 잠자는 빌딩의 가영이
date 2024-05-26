@@ -1,0 +1,41 @@
+from fractions import Fraction
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def reduce_fraction(p, q):
+    g = gcd(p, q)
+    return Fraction(p // g, q // g)
+
+def calculate_probabilities(N, K, A, B, C, X):
+    p = Fraction(A, A+B+C)
+    q = Fraction(B, A+B+C)
+    r = Fraction(C, A+B+C)
+    
+    dp = [[Fraction(0) for _ in range(N+2)] for _ in range(X+1)]
+    dp[0][K] = Fraction(1)
+    
+    for x in range(1, X+1):
+        for n in range(1, N+1):
+            dp[x][n] = dp[x-1][n-1]*p + dp[x-1][n+1]*q + dp[x-1][n]*r
+    
+    wake_up_prob = Fraction(0)
+    for x in range(1, X+1):
+        wake_up_prob += dp[x-1][1]*q + dp[x-1][N]*p
+    
+    return dp[X], wake_up_prob
+
+def print_probabilities(probabilities, wake_up_prob):
+    for prob in probabilities[1:-1]:
+        if prob.numerator == 0:
+            print("0/1", end=" ")
+        else:
+            print("{}/{}".format(prob.numerator, prob.denominator), end=" ")
+    print()
+    print("{}/{}".format(wake_up_prob.numerator, wake_up_prob.denominator))
+
+N, K, A, B, C, X = map(int, input().split())
+probabilities, wake_up_prob = calculate_probabilities(N, K, A, B, C, X)
+print_probabilities(probabilities, wake_up_prob)
