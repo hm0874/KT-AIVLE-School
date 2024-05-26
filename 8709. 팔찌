@@ -1,0 +1,13 @@
+# 두 팔찌의 보석 배열 상태를 입력받습니다.
+bracelet1 = input()
+bracelet2 = input()
+
+# 두 번째 팔찌를 두 번 연결하여 큰 문자열을 만듭니다.
+# 이렇게 하면 모든 가능한 회전 상태를 포함하게 됩니다.
+bracelet2_doubled = bracelet2 * 2
+
+# 첫 번째 팔찌가 두 번째 팔찌의 연결된 문자열에 포함되어 있는지 확인합니다.
+if bracelet1 in bracelet2_doubled:
+    print("YES")
+else:
+    print("NO")
