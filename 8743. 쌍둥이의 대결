@@ -1,0 +1,40 @@
+def calculate_score_difference(N, sequence, M):
+    # 모든 가능한 (i, j) 쌍의 점수를 저장할 리스트
+    scores = []
+    
+    # dp 배열 초기화
+    dp = [[0] * N for _ in range(N)]
+    
+    # dp 배열 채우기
+    for i in range(N):
+        product = 1
+        for j in range(i, N):
+            product = (product * sequence[j]) % M
+            dp[i][j] = product
+            scores.append(dp[i][j])
+    
+    # 점수 리스트를 내림차순으로 정렬
+    scores.sort(reverse=True)
+    
+    # 기성과 기승의 점수 계산
+    score_ki = 0
+    score_gi = 0
+    
+    # 번갈아가면서 점수 선택
+    for turn in range(len(scores)):
+        if turn % 2 == 0:
+            score_ki += scores[turn]
+        else:
+            score_gi += scores[turn]
+    
+    # 기성의 점수에서 기승의 점수를 뺀 값 반환
+    return score_ki - score_gi
+
+# 입력
+N = int(input())
+sequence = list(map(int, input().split()))
+M = int(input())
+
+# 결과 계산 및 출력
+result = calculate_score_difference(N, sequence, M)
+print(result)
