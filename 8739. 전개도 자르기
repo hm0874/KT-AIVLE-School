@@ -1,0 +1,74 @@
+import sys
+ 
+# 격자를 입력받습니다.
+grid = [
+    list(map(int, sys.stdin.readline().split())) for _ in range(10)
+]
+ 
+# 전개도 패턴을 정의합니다.
+cubes = [
+    [[1, 0, 0, 0], [1, 1, 1, 1], [1, 0, 0, 0]],
+    [[0, 1, 0, 0], [1, 1, 1, 1], [1, 0, 0, 0]],
+    [[0, 0, 1, 0], [1, 1, 1, 1], [1, 0, 0, 0]],
+    [[0, 0, 0, 1], [1, 1, 1, 1], [1, 0, 0, 0]],
+    [[0, 1, 0, 0], [1, 1, 1, 1], [0, 1, 0, 0]],
+    [[0, 0, 1, 0], [1, 1, 1, 1], [0, 1, 0, 0]],
+    [[0, 0, 1, 1, 1], [1, 1, 1, 0, 0]],
+    [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]],
+    [[0, 0, 1, 1], [1, 1, 1, 0], [1, 0, 0, 0]],
+    [[1, 1, 0, 0], [0, 1, 1, 1], [0, 1, 0, 0]],
+    [[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 1, 1]]
+]
+ 
+def rotate(matrix):
+    """ Rotate the matrix 90 degrees clockwise """
+    return [list(reversed(col)) for col in zip(*matrix)]
+ 
+def reflect(matrix):
+    """ Reflect the matrix horizontally """
+    return [list(reversed(row)) for row in matrix]
+ 
+def get_all_transforms(pattern):
+    """ Generate all rotations and reflections for a given pattern """
+    transformations = set()
+    current = pattern
+    for _ in range(4):  # Rotate four times 90 degrees
+        current = rotate(current)
+        transformations.add(tuple(tuple(row) for row in current))
+        transformations.add(tuple(tuple(row) for row in reflect(current)))
+    return transformations
+ 
+def is_grid_uniform(grid):
+    """ Check if all elements in the grid are the same """
+    first_element = grid[0][0]
+    for row in grid:
+        for element in row:
+            if element != first_element:
+                return False
+    return True
+    
+def max_sum(grid, cubes):
+    if is_grid_uniform(grid):
+        return grid[0][0] * 6  # If uniform, max sum is element value times number of faces
+ 
+    max_total = 0
+    max_possible_sum = max(max(row) for row in grid) * 6
+    grid_height, grid_width = len(grid), len(grid[0])
+ 
+    for cube in cubes:
+        transformations = get_all_transforms(cube)
+        for transformation in transformations:
+            cube_height, cube_width = len(transformation), len(transformation[0])
+ 
+            for start_row in range(grid_height - cube_height + 1):
+                for start_col in range(grid_width - cube_width + 1):
+                    total = sum(grid[start_row + i][start_col + j] * transformation[i][j]
+                                for i in range(cube_height) for j in range(cube_width)
+                                if transformation[i][j] == 1)
+                    max_total = max(max_total, total)
+                    if max_total == max_possible_sum:
+                        return max_total  # Early exit if max possible sum is found
+ 
+    return max_total
+ 
+print(max_sum(grid, cubes))
