@@ -1,0 +1,19 @@
+def calculate_final_money(N, M):
+    # 민서의 돈이 윤호의 돈의 2배 이상일 때
+    while N >= 2*M or M >= 2*N:
+        if N >= 2*M:
+            if M == 0: break
+            # 민서의 돈에서 윤호의 돈의 2배를 몇 번 뺄 수 있는지 계산
+            N %= (2*M)
+        elif M >= 2*N:
+            if N == 0: break
+            # 윤호의 돈에서 민서의 돈의 2배를 몇 번 뺄 수 있는지 계산
+            M %= (2*N)
+    return N, M
+
+# 입력 받기
+N, M = map(int, input().split())
+
+# 최종 금액 계산 및 출력
+final_N, final_M = calculate_final_money(N, M)
+print(final_N, final_M)
