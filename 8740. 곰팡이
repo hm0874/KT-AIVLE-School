@@ -1,0 +1,36 @@
+def matmul(A, B, mod):
+    """행렬 곱셈 함수"""
+    result = [[0, 0], [0, 0]]
+    for i in range(2):
+        for j in range(2):
+            for k in range(2):
+                result[i][j] += A[i][k] * B[k][j]
+                result[i][j] %= mod
+    return result
+
+
+def fast_pow(mat, power, mod):
+    """행렬 거듭제곱 함수"""
+    result = [[1, 0], [0, 1]]  # 단위 행렬
+    while power > 0:
+        if power % 2 == 1:
+            result = matmul(result, mat, mod)
+        mat = matmul(mat, mat, mod)
+        power //= 2
+    return result
+
+
+def count_fungi(n, mod):
+    """N분 후의 총 곰팡이 수를 계산하는 함수"""
+    if n == 0:
+        return 1
+    mat = [[1, 1], [1, 0]]
+    # 행렬 거듭제곱을 이용해 n-1번째 피보나치 수를 계산
+    result_mat = fast_pow(mat, n-1, mod)
+    # 결과 행렬의 (0, 0) 위치가 N분 후의 총 곰팡이 수
+    return (result_mat[0][0] + result_mat[0][1]) % mod
+
+
+# 예제 입력 및 출력
+n = int(input())
+print(count_fungi(n, 1000000007))
