@@ -1,0 +1,8 @@
+# 입력 받기
+A, B, C = map(int, input().split())
+
+# 가장 많은 용액의 개수가 다른 두 용액의 개수 합보다 큰지 확인
+if max(A, B, C) > (A + B + C - max(A, B, C)):
+    print("NO")
+else:
+    print("YES")
