@@ -1,0 +1,38 @@
+N = int(input())
+point_list = map(int, input().split())
+ 
+result = 'OK'
+angle = {
+    (1, 4): 0, (1, 2): 45, (1, 3): 315, (2, 3): 270, (2, 4): 315, (3, 4): 45
+    , (4, 1): 180, (2, 1): 225, (3, 1): 135, (3, 2): 90, (4, 2): 135, (4, 3): 225
+}
+prev_point = [0, 0]
+temp_point = [0, 0]
+prev = 0
+lr_chk = True
+for point in point_list:
+    if prev == 0:
+        prev = point
+        temp_point[0] = point
+        continue
+ 
+    if lr_chk:
+        prev_point[1] = temp_point[1]
+        temp_point[1] = point
+        lr_chk = False
+    else:
+        prev_point[0] = temp_point[0]
+        temp_point[0] = point
+        lr_chk = True
+ 
+    if 0 not in prev_point:
+        if lr_chk:
+            cur_point = (point, prev)
+        else:
+            cur_point = (prev, point)
+        if abs(angle.get(cur_point) - angle.get((prev_point[0], prev_point[1]))) >= 180:
+            result = 'NG'
+ 
+    prev = point
+ 
+print(result)
