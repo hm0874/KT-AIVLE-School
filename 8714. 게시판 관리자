@@ -1,0 +1,30 @@
+import sys
+ 
+inp = sys.stdin.readline
+ 
+N = int(inp())
+data1 = inp().split()
+data2 = inp().split()
+ 
+diff = []
+temp = []
+dupl = []
+for d1, d2 in zip(data1, data2):
+    if d1 not in temp:
+        temp.append(d1)
+    else:
+        dupl.append(d1)
+ 
+    if d1 != d2:
+        diff.append((d1, d2))
+ 
+cnt = 0
+if len(diff) == 2:
+    if any(item in dupl for item in diff[0]):
+        cnt = 1
+elif len(diff) == 3:
+    cnt = 3
+elif len(diff) == 4:
+    if any((item[1], item[0]) in diff for item in diff):
+        cnt = 2
+print(cnt)
