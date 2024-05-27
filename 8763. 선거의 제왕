@@ -1,0 +1,20 @@
+N = int(input())
+A = list(map(int, input().split()))
+ 
+king = A[0]
+other = sorted(A[1:], reverse=True)
+ 
+a_sum = king
+a_len = 1
+max_king = king
+ 
+for o in other:
+    if max_king > o:
+        break
+    elif max_king == o:
+        break
+    a_sum += o
+    a_len += 1
+    max_king = a_sum // a_len + 1 if a_sum % a_len == 0 else a_sum // a_len + 2
+ 
+print(max_king-king)
